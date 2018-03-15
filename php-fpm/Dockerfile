@@ -43,9 +43,6 @@ COPY default /etc/nginx/sites-available/default
 COPY php-fpm.conf /etc/php/7.2/fpm/php-fpm.conf
 COPY xdebug.ini /etc/php/7.2/mods-available/xdebug.ini
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-RUN echo "teste"
-
 COPY entrypoint.sh /entrypoint.sh
 
 # Fix line-ending issues with Windows
@@ -58,7 +55,5 @@ RUN dos2unix /entrypoint.sh \
 
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
-
-#RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
