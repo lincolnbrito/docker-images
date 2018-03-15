@@ -4,7 +4,7 @@ USER="lincolnbrito"
 TIMESTAMP=$(date "+%Y%m%d%H%M")
 
 echo "Construindo a imagem ${USER}/php-fpm:${TIMESTAMP}"
-docker build -f php-fpm/Dockerfile -t ${USER}/php-fpm:${TIMESTAMP} .
+docker build -t ${USER}/php-fpm:${TIMESTAMP} .
 
 echo "Marcando a tag latest também"
 docker tag ${USER}/php-fpm:${TIMESTAMP} ${USER}/php-fpm:latest
