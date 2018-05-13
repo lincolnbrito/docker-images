@@ -1,0 +1,14 @@
+#!/bin/bash
+
+USER="lincolnbrito"
+TIMESTAMP=$(date "+%Y%m%d%H%M")
+
+echo "Construindo a imagem ${USER}/vue-cli:${TIMESTAMP}"
+docker build -t ${USER}/vue-cli:${TIMESTAMP} .
+
+echo "Marcando a tag latest também"
+docker tag ${USER}/vue-cli:${TIMESTAMP} ${USER}/vue-cli:latest
+
+echo "Enviando a imagem para nuvem docker"
+docker push ${USER}/vue-cli:${TIMESTAMP}
+docker push ${USER}/vue-cli:latest
