@@ -3,7 +3,7 @@ FROM php:7.2-fpm
 LABEL maintainer="Lincoln Brito <lincoln.sbrito@gmail.com>"
 LABEL description="PHP 7.2 fpm"
 
-RUN requirements="libmcrypt-dev g++ libicu-dev curl zip unzip supervisor sqlite3" \
+RUN requirements="libmcrypt-dev g++ libicu-dev curl zip unzip supervisor sqlite3 dos2unix" \
     && apt-get update && apt-get install -y $requirements && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install mcrypt \
@@ -24,7 +24,7 @@ RUN requirements="libmcrypt-dev g++ libicu-dev curl zip unzip supervisor sqlite3
     && docker-php-install msgpack \
     && docker-php-install igbinary \
     #
-    && requirementsToRemove="g++" \
+    && requirementsToRemove="g++ dos2unix" \
     && apt-get purge --auto-remove -y $requirementsToRemove
 
 RUN sed -i -e 's/listen.*/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.conf
@@ -32,6 +32,11 @@ RUN sed -i -e 's/listen.*/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.conf
 RUN usermod -u 1000 www-data
 
 COPY docker-entrypoint.sh /entrypoint.sh
+
+RUN dos2unix /entrypoint.sh \
+    && apt-get --purge remove -y dos2unix \
+    && apt-get -y autoremove \
+
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["php-fpm"]
